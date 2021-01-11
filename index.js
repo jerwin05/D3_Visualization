@@ -17,11 +17,11 @@ const svg=d3.select('#chart')
 svg.append('text')
     .attr('transform','rotate(-90)')
     .attr('x',-275)
-    .attr('y',20)
+    .attr('y',12)
     .text('Gross Domestic Product');
 
 svg.append('text')
-    .attr('x',w/2-paddingRight)
+    .attr('x',w/2.5-paddingRight)
     .attr('y',h-5)
     .text('More Information: http://www.bea.gov/national/pdf/nipaguid.pdf');
 
@@ -65,10 +65,6 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
 
             const maxDate=new Date(d3.max(year));
             maxDate.setMonth(maxDate.getMonth()+3);
-
-            // const xScale= d3.time.scale()
-            //     .domain([d3.min(year),d3.max(year)])
-            //     .range([paddingLeft,w-paddingRight]);
 
             const xScale= d3.time.scale()
               .domain([d3.min(year),maxDate])
@@ -124,8 +120,6 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
                 stroke: 'black'
             });
 
-            const formattedGDP=GDP.map(item=>item.toString().replace(/(\d)(?=(\d{3})+\.)/g,'$1,'));
-
             svg.selectAll('rect')
                 .data(scaledGDP) 
                 .enter()
@@ -150,11 +144,12 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
                         .style('transform',`translate(${paddingLeft}px,0px)`);
                     tooltip
                         .transition()
-                        .duration(200)
+                        .duration(0)
                         .style('opacity',0.9);
                     tooltip
                         .html(yearDate[i] +'<br>$'+     
-                            formattedGDP[i]+' Billion')
+                            GDP[i].toString().replace(/(\d)(?=(\d{3})+\.)/g,'$1,')
+                            +' Billion')
                         .attr('data-date',result.data[i][0])
                         .style('left',`${i*overlayWidth+50}px`);
                 })

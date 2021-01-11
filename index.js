@@ -1,32 +1,3 @@
-<style>
-*{
-  margin:0;
-  padding:0;
-  font-family:'Roboto';
-}
-
-.container{
-  margin: 0 auto;
-  text-align: center;
-}
-
-#title{
-  font-size:33px;
-  margin: 20px 0;
-}
-</style>
-
-<div class="main">
-  <div class="container">
-    <div id="title">United States GDP</div>
-    <div id="chart"></div>
-  </div>
-</div>
-<script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
-<script src="https://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
-
-
-<script>
 let h=450;
 let w=850;
 let barWidth=w/275;
@@ -52,13 +23,13 @@ svg.append('text')
    .text('More Information: http://www.bea.gov/national/pdf/nipaguid.pdf');
 
 const overlay=d3
-  .select('svg')
+  .select('#chart')
   .append('div')
   .attr('class','overlay')
   .style('opacity',0);
 
 const tooltip=d3
-  .select('svg')
+  .select('#chart')
   .append('div')
   .attr('id','tooltip')
   .style('opacity',0);
@@ -152,26 +123,46 @@ var ticks = d3.selectAll('.tick line');
     stroke: 'black'
   });
   
+const formattedGDP=GDP.map(item=>item.toString().replace(/(\d)(?=(\d{3})+\.*)/g,'$1,'));
+
 svg.selectAll('rect')
-   .data(scaledGDP) 
-   .enter()
-   .append('rect')
-   .attr('y',d=>h-(d+paddingBottom+1))   
-   .attr('x',(d,i)=>xScale(year[i]))
-   .attr('class','bar')
-   .attr('data-gdp',(d,i)=>GDP[i])
-   .attr('data-date',(d,i)=>year[i])
-   .attr('width',barWidth)
-   .attr('fill','#33ADFF')
-   .attr('height',d=>d)
-   .on('mouseover',(d,i)=>{
-   })
-   .on('mouseout',(d,i)=>{
-   });
+  .data(scaledGDP) 
+  .enter()
+  .append('rect')
+  .attr('y',d=>h-(d+paddingBottom+1))   
+  .attr('x',(d,i)=>xScale(year[i]))
+  .attr('class','bar')
+  .attr('data-gdp',(d,i)=>GDP[i])
+  .attr('data-date',(d,i)=>year[i])
+  .attr('width',barWidth)
+  .attr('fill','#33ADFF')
+  .attr('height',d=>d)
+  .on('mouseover',(d,i)=>{
+    overlay
+      // .transition()
+      .duration(0)
+      .style('height',d+'px')
+      .style('width',barWidth+'px')
+      .style('left',`${i*barWidth}px`)
+      .style('top',`${h-d}px`)
+      .style('opacity',0.5);
+    tooltip
+      .transition()
+      .duration(200)
+      .style('opacity',0.9);
+    tooltip
+      .html(yearDate[i] +'<br>$'+     
+        formattedGDP[i]+' Billion');
+  })
+  .on('mouseout',(d,i)=>{
+    overlay
+      .transition()
+      .duration(200)
+      .style('opacity',0);
+    tooltip
+      .transition()
+      .duration(200)
+      .style('opacity',0);
+  });
   
 }))
-</script>
-
-<script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
-<script src="https://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
-

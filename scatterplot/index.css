@@ -1,0 +1,18 @@
+*{
+    margin:0;
+    padding: 0;
+    font-family: 'Montserrat';
+}
+
+.main{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.subTitle{
+    margin: 4px 0 15px;
+    font-size: 20px;
+}

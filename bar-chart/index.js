@@ -134,8 +134,6 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
                 .attr('height',d=>d)
                 .on('mouseover',(d,i)=>{
                     overlay
-                        .transition()
-                        .duration(0)
                         .style('height',d+'px')
                         .style('width',barWidth+'px')
                         .style('left',`${i*overlayWidth}px`)
@@ -143,8 +141,6 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
                         .style('opacity',0.9)
                         .style('transform',`translate(${paddingLeft}px,0px)`);
                     tooltip
-                        .transition()
-                        .duration(0)
                         .style('opacity',0.9);
                     tooltip
                         .html(yearDate[i] +'<br>$'+     
